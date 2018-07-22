@@ -1,7 +1,6 @@
 package com.mischief247.dungeonbot.commands;
 
 import com.mischief247.dungeonbot.util.PropertiesManager;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +41,6 @@ public class RollCommand extends Command {
                         p.sendMessage(sb.toString()).queue();
                     }
                 }
-
                 return "*you hear the sound of tumbling dice*";
             }
         }

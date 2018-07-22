@@ -6,7 +6,7 @@ public class HelpCommand extends Command {
 
     public String invoke(String[] args, Message message) {
         StringBuilder sb = new StringBuilder();
-        sb.append("DMBot by mischief247 please report all bugs!\n");
+        sb.append("DMBot by mischief247 please report all bugs here https://github.com/mischief247/DungeonBot/issues\n");
         sb.append("----------------------------------------------------\n");
 
         for (CommandList cl : CommandList.values()) {

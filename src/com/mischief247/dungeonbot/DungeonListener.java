@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class DungeonListener extends ListenerAdapter {
+class DungeonListener extends ListenerAdapter {
 
     public void onMessageReceived(MessageReceivedEvent event) {
         if (!event.getAuthor().isBot() && event.getChannelType().equals(ChannelType.TEXT) && event.getMessage().getContentDisplay().startsWith(PropertiesManager.token)) {
@@ -27,4 +27,5 @@ public class DungeonListener extends ListenerAdapter {
         }
 
     }
+
 }

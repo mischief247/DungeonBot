@@ -27,14 +27,22 @@ public class CreateGroupCommand extends Command {
             channelAction.queue();
             voice.queue();
 
-            try {
-                TimeUnit.MILLISECONDS.sleep(200L);
-            } catch (InterruptedException var15) {
-                var15.printStackTrace();
+            boolean found  = false;
+            Channel channel = null;
+            Channel voiceChannel = null;
+            while(!found) {
+                try {
+                     channel = gc.getGuild().getTextChannelsByName(args[1], false).get(0);
+                     voiceChannel = gc.getGuild().getVoiceChannelsByName(args[1], false).get(0);
+                    found = true;
+                }catch (IndexOutOfBoundsException e){
+                    try{
+                        TimeUnit.MILLISECONDS.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                }
             }
-
-            Channel channel = gc.getGuild().getTextChannelsByName(args[1], false).get(0);
-            Channel voiceChannel = gc.getGuild().getVoiceChannelsByName(args[1], false).get(0);
             ((TextChannel)channel).sendMessage("test").queue();
             PermissionOverrideAction paEveryone = channel.createPermissionOverride(message.getGuild().getRolesByName("@everyone", false).get(0));
             paEveryone = paEveryone.setDeny(Permission.VIEW_CHANNEL);
@@ -45,21 +53,29 @@ public class CreateGroupCommand extends Command {
             RoleAction ra = gc.createRole();
             ra = ra.setName(message.getMember().getEffectiveName());
             ra.queue();
-
-            try {
-                TimeUnit.MILLISECONDS.sleep(200L);
-            } catch (InterruptedException var14) {
-                var14.printStackTrace();
+            found = false;
+            Role role = null;
+            while (!found){
+                try {
+                     role = gc.getGuild().getRolesByName(message.getMember().getEffectiveName(), false).get(0);
+                     found = true;
+                }catch (IndexOutOfBoundsException e){
+                    try{
+                        TimeUnit.MILLISECONDS.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                }
             }
 
-            Role role = gc.getGuild().getRolesByName(message.getMember().getEffectiveName(), false).get(0);
+
             PermissionOverrideAction paRoll = channel.createPermissionOverride(role);
             paRoll = paRoll.setAllow(Permission.VIEW_CHANNEL);
             paRoll.queue();
             paRoll = voiceChannel.createPermissionOverride(role);
             paRoll =paRoll.setAllow(Permission.VIEW_CHANNEL);
             paRoll.queue();
-            gc.addRolesToMember(message.getMember(), new Role[]{role}).queue();
+            gc.addRolesToMember(message.getMember(), role).queue();
 
             for (Member m : message.getMentionedMembers()) {
                 gc.addRolesToMember(m, role).queue();

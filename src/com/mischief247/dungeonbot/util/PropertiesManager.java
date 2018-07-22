@@ -10,7 +10,7 @@ import java.util.Properties;
 public class PropertiesManager {
     public static String token = "";
     private static final String fileName = "dungeonbot.properties";
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
     public static void load() throws IOException {
         File file = new File(fileName);
         if (!file.exists()) {
@@ -20,23 +20,22 @@ public class PropertiesManager {
             }
         }
 
-        InputStream inputStream = new FileInputStream("dungeonbot.properties");
+        InputStream inputStream = new FileInputStream(fileName);
         properties.load(inputStream);
         token = properties.getProperty("Token", "!");
     }
 
     public static void save() {
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("dungeonbot.properties");
-            Throwable var1 = null;
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 
             try {
                 properties.store(fileOutputStream, "");
             } catch (IOException io) {
                 io.printStackTrace();
             }
-        } catch (IOException var13) {
-            var13.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
         }
 
     }
