@@ -1,7 +1,12 @@
 package com.mischief247.dungeonbot.commands;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
+
+import com.mischief247.dungeonbot.util.MessageHelper;
+import com.mischief247.dungeonbot.util.MessageWithState;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Member;
@@ -15,11 +20,11 @@ import net.dv8tion.jda.core.requests.restaction.RoleAction;
 
 public class CreateGroupCommand extends Command {
 
-    public String invoke(String[] args, Message message) {
+    public MessageWithState invoke(String[] args, Message message) {
         System.out.println(message.getMember().getNickname());
         System.out.println(message.getMember().getRoles());
         if (!message.getMember().getRoles().contains(message.getGuild().getRolesByName("Dungeon Master", false).get(0))) {
-            return "you do not have permission to use that command please speak to an admin if you believe this is in error";
+            return new MessageWithState("you do not have permission to use that command please speak to an admin if you believe this is in error", false);
         } else {
             GuildController gc = new GuildController(message.getGuild());
             ChannelAction channelAction = gc.createTextChannel(args[1]);
@@ -39,7 +44,8 @@ public class CreateGroupCommand extends Command {
                     try{
                         TimeUnit.MILLISECONDS.sleep(200);
                     }catch (InterruptedException ie){
-                        ie.printStackTrace();
+
+                        return new MessageWithState(MessageHelper.getStackTraceasSting(ie),true);
                     }
                 }
             }
@@ -63,7 +69,7 @@ public class CreateGroupCommand extends Command {
                     try{
                         TimeUnit.MILLISECONDS.sleep(200);
                     }catch (InterruptedException ie){
-                        ie.printStackTrace();
+                        return new MessageWithState(MessageHelper.getStackTraceasSting(ie),true);
                     }
                 }
             }
@@ -81,7 +87,7 @@ public class CreateGroupCommand extends Command {
                 gc.addRolesToMember(m, role).queue();
             }
 
-            return message.getMember().getEffectiveName();
+            return new MessageWithState("  ",false);
         }
     }
 
